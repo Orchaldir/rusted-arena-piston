@@ -1,7 +1,11 @@
+#[macro_use]
+extern crate impl_ops;
 extern crate piston_window;
 
+mod math;
 mod render;
 
+use math::Point;
 use piston_window::*;
 use render::tile::TileRenderer;
 use render::Renderer;
@@ -13,11 +17,12 @@ struct PistonRenderer<'a, 'b> {
 
 impl<'a, 'b> Renderer for PistonRenderer<'a, 'b> {
     fn start(&mut self) {
-        clear([0.0, 0.0, 0.0, 1.0], self.graphics);
+        let black = [0.0, 0.0, 0.0, 1.0];
+        clear(black, self.graphics);
     }
 
-    fn render_rectangle(&mut self, pos: (u32, u32), size: (u32, u32), color: [f32; 4]) {
-        let rect = [pos.0 as f64, pos.1 as f64, size.0 as f64, size.1 as f64];
+    fn render_rectangle(&mut self, pos: &Point, size: &Point, color: [f32; 4]) {
+        let rect = [pos.x as f64, pos.y as f64, size.x as f64, size.y as f64];
         rectangle(color, rect, self.context.transform, self.graphics);
     }
 }
@@ -29,7 +34,10 @@ fn main() {
         .build()
         .unwrap();
 
-    let tile_renderer = TileRenderer::new((0, 0), (100, 100));
+    let start = Point { x: 0, y: 0 };
+    let tile_size = Point { x: 100, y: 100 };
+
+    let tile_renderer = TileRenderer::new(start, tile_size);
 
     while let Some(e) = window.next() {
         window.draw_2d(&e, |c, g, _device| {
@@ -45,6 +53,6 @@ fn main() {
 
 fn render<R: Renderer>(renderer: &mut R, tile_renderer: &TileRenderer) {
     renderer.start();
-    tile_renderer.render_full(renderer, (0, 0), [1.0, 0.0, 0.0, 1.0]);
-    tile_renderer.render_full(renderer, (1, 0), [0.0, 0.0, 1.0, 1.0]);
+    tile_renderer.render_full(renderer, &Point { x: 0, y: 0 }, [1.0, 0.0, 0.0, 1.0]);
+    tile_renderer.render_full(renderer, &Point { x: 1, y: 0 }, [0.0, 0.0, 1.0, 1.0]);
 }
