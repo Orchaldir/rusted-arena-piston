@@ -7,4 +7,5 @@ pub struct Point {
 }
 
 impl_op_ex!(+ |a: &Point, b: &Point| -> Point { Point{x: a.x + b.x, y: a.y + b.y}});
+#[rustfmt::skip::macros(impl_op_ex)]
 impl_op_ex!(* |a: &Point, b: &Point| -> Point { Point{x: a.x * b.x, y: a.y * b.y}});
