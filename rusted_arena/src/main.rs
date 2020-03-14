@@ -15,7 +15,8 @@ impl<'a, 'b> Renderer for PistonRenderer<'a, 'b> {
         clear([0.0, 0.0, 0.0, 1.0], self.graphics);
     }
 
-    fn render_rectangle(&mut self, rect: [f64; 4], color: [f32; 4]) {
+    fn render_rectangle(&mut self, pos: (u32, u32), size: (u32, u32), color: [f32; 4]) {
+        let rect = [pos.0 as f64, pos.1 as f64, size.0 as f64, size.1 as f64];
         rectangle(color, rect, self.context.transform, self.graphics);
     }
 }
@@ -39,8 +40,9 @@ fn main() {
     }
 }
 
-fn render<T: Renderer>(renderer: &mut T) {
+fn render<R: Renderer>(renderer: &mut R) {
+    let size = (100, 100);
     renderer.start();
-    renderer.render_rectangle([0.0, 0.0, 100.0, 100.0], [1.0, 0.0, 0.0, 1.0]);
-    renderer.render_rectangle([100.0, 0.0, 100.0, 100.0], [0.0, 0.0, 1.0, 1.0]);
+    renderer.render_rectangle((0, 0), size, [1.0, 0.0, 0.0, 1.0]);
+    renderer.render_rectangle((100, 0), size, [0.0, 0.0, 1.0, 1.0]);
 }
