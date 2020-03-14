@@ -1,11 +1,9 @@
 extern crate piston_window;
 
-use piston_window::*;
+mod render;
 
-pub trait Renderer {
-    fn start(&mut self);
-    fn render_rectangle(&mut self, rect: [f64; 4], color: [f32; 4]);
-}
+use piston_window::*;
+use render::Renderer;
 
 struct PistonRenderer<'a, 'b> {
     context: Context,
