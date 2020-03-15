@@ -35,7 +35,7 @@ Water | Blue
 
 ## Entities
 
-* The entity's symbol is rendered with its team color.
+* The entity's symbol is rendered with its team COLOR.
 * The symbol is rotated to match the entity's orientation.
 
 Description | Symbol
@@ -44,8 +44,8 @@ Humanoid | Triangle
 
 ## Effects
 
-* The whole rectangle is rendered with the effect's color.
-* The effect's intensity (0-1) interpolates between black and its color.
+* The whole rectangle is rendered with the effect's COLOR.
+* The effect's intensity (0-1) interpolates between black and its COLOR.
 
 Effect | Color
 --- | ---
