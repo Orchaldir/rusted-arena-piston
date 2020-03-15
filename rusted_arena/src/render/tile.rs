@@ -10,7 +10,19 @@ impl TileRenderer {
         TileRenderer { start, tile_size }
     }
 
-    pub fn render_full<R: super::Renderer>(&self, renderer: &mut R, pos: &Point, color: [f32; 4]) {
+    pub fn render_char<R>(&self, renderer: &mut R, c: char, pos: &Point, color: [f32; 4])
+    where
+        R: super::Renderer,
+    {
+        let pos = &self.start + pos * &self.tile_size;
+
+        renderer.render_char(c, &pos, self.tile_size.y as u32, color);
+    }
+
+    pub fn render_full<R>(&self, renderer: &mut R, pos: &Point, color: [f32; 4])
+    where
+        R: super::Renderer,
+    {
         let pos = &self.start + pos * &self.tile_size;
 
         renderer.render_rectangle(&pos, &self.tile_size, color);

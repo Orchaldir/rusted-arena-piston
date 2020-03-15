@@ -24,10 +24,10 @@ impl<'a, 'b> Renderer for PistonRenderer<'a, 'b> {
         clear(black, self.graphics);
     }
 
-    fn render_char(&mut self, c: char, pos: &Point, size: u32, color: [f32; 4]) {
+    fn render_char(&mut self, c: char, pos: &Point, font_size: u32, color: [f32; 4]) {
         let image = Image::new_color(color);
-        let character = self.glyphs.character(size, c).unwrap();
-        let center = pos + (size / 2) as i32;
+        let character = self.glyphs.character(font_size, c).unwrap();
+        let center = pos + (font_size / 2) as i32;
         let start_x = center.x as f64 - character.advance_size[0] * 0.5;
         let start_y = center.y as f64 - character.offset[1] * 0.5;
 
@@ -61,7 +61,7 @@ fn main() {
         .expect("Could not load font!");
 
     let start = Point { x: 0, y: 0 };
-    let tile_size = Point { x: 100, y: 100 };
+    let tile_size = Point { x: 32, y: 32 };
 
     let tile_renderer = TileRenderer::new(start, tile_size);
 
@@ -80,8 +80,12 @@ fn main() {
 
 fn render<R: Renderer>(renderer: &mut R, tile_renderer: &TileRenderer) {
     renderer.start();
-    tile_renderer.render_full(renderer, &Point { x: 0, y: 0 }, [1.0, 0.0, 0.0, 1.0]);
-    tile_renderer.render_full(renderer, &Point { x: 1, y: 0 }, [0.0, 0.0, 1.0, 1.0]);
 
-    renderer.render_char('#', &Point { x: 0, y: 0 }, 100, [1.0, 1.0, 1.0, 1.0]);
+    for i in 0..10 {
+        let background = [(i % 2) as f32, 0.0, ((i + 1) % 2) as f32, 1.0];
+        let font = [1.0, (i % 2) as f32, 1.0, 1.0];
+
+        tile_renderer.render_full(renderer, &Point { x: i, y: 0 }, background);
+        tile_renderer.render_char(renderer, '#', &Point { x: i, y: 0 }, font);
+    }
 }
